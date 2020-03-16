@@ -162,7 +162,7 @@
 #define TELNETSPY_REJECT_MSG "TelnetSpy: Only one connection possible.\r\n"
 
 
-#ifdef ESP8266
+#ifdef ARDUINO_ARCH_ESP8266
 #include <ESP8266WiFi.h>
 // empty defines, so on ESP8266 nothing will be changed
 #define CRITCAL_SECTION_MUTEX
@@ -199,7 +199,7 @@ class TelnetSpy : public Stream {
 		void setCallbackOnConnect(void (*callback)());
 		void setCallbackOnDisconnect(void (*callback)());
 		// Functions offered by HardwareSerial class:
-#ifdef ESP8266
+#ifdef ARDUINO_ARCH_ESP8266
 		void begin(unsigned long baud) { begin(baud, SERIAL_8N1, SERIAL_FULL, 1); }
 		void begin(unsigned long baud, SerialConfig config) { begin(baud, config, SERIAL_FULL, 1); }
 		void begin(unsigned long baud, SerialConfig config, SerialMode mode) { begin(baud, config, mode, 1); }
@@ -208,7 +208,7 @@ class TelnetSpy : public Stream {
 		void begin(unsigned long baud, uint32_t config=SERIAL_8N1, int8_t rxPin=-1, int8_t txPin=-1, bool invert=false);
 #endif
 		void end();
-#ifdef ESP8266
+#ifdef ARDUINO_ARCH_ESP8266
 		void swap() { swap(1); }
 		void swap(uint8_t tx_pin);
 		void set_tx(uint8_t tx_pin);

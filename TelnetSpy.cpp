@@ -1,5 +1,5 @@
 /*
- * TELNET SERVER FOR ESP8266 / ESP32
+ * TELNET SERVER FOR ARDUINO_ARCH_ESP8266 / ESP32
  * Cloning the serial port via Telnet.
  *
  * Written by Wolfgang Mattis (arduino@yasheena.de).
@@ -7,7 +7,7 @@
  * MIT license, all text above must be included in any redistribution.   
  */
 
-#ifdef ESP8266
+#ifdef ARDUINO_ARCH_ESP8266
 extern "C" {
 	#include "user_interface.h"
 }
@@ -306,7 +306,7 @@ void TelnetSpy::flush (void) {
 	}
 }
 
-#ifdef ESP8266
+#ifdef ARDUINO_ARCH_ESP8266
 
 void TelnetSpy::begin(unsigned long baud, SerialConfig config, SerialMode mode, uint8_t tx_pin) {
 	if (usedSer) {
@@ -348,7 +348,7 @@ void TelnetSpy::end() {
 	started = false;
 }
 
-#ifdef ESP8266
+#ifdef ARDUINO_ARCH_ESP8266
 
 void TelnetSpy::swap(uint8_t tx_pin) {
 	if (usedSer) {
@@ -402,17 +402,17 @@ void TelnetSpy::setDebugOutput(bool en) {
 	debugOutput = en;
 	if (debugOutput) {
 		actualObject = this;
-#ifdef ESP8266		
-		os_install_putc1((void*) TelnetSpy_putc);  // Set system printing (os_printf) to TelnetSpy
+#ifdef ARDUINO_ARCH_ESP8266		
+		os_install_putc1(*TelnetSpy_putc);  // Set system printing (os_printf) to TelnetSpy
 		system_set_os_print(true);
 #else // ESP32
 		// ToDo: How can be done this for ESP32 ?
 #endif
 	} else {
 		if (actualObject == this) {
-#ifdef ESP8266		
+#ifdef ARDUINO_ARCH_ESP8266		
 			system_set_os_print(false);
-			os_install_putc1((void*) TelnetSpy_ignore_putc); // Ignore system printing
+			os_install_putc1(*TelnetSpy_ignore_putc); // Ignore system printing
 #else // ESP32
 			// ToDo: How can be done this for ESP32 ?
 #endif
